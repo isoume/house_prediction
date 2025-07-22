@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/isi_is_house_predict:latest ./api/.
 
       - name: Push Docker image to Docker Hub
         run: |
