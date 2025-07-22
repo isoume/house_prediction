@@ -3,26 +3,32 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # or your deployment branch
+      - main  # Quant je pousse un commit
+  # Quant je crée un PR
+  pull_request:
+    types: [opened]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
+      # Code
       - name: Checkout source code
         uses: actions/checkout@v4
-
+      # Se connecter à docker pour upload des choses
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Construire l'image
       - name: Build and tag Docker image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/isi_is_house_predict:latest ./api/.
 
+      # Envoyer l'image dans Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/isi_is_house_predict:latest
